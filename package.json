@@ -1,6 +1,6 @@
 {
     "name": "reddit-api-ts-docs",
-    "module": "index.ts",
+    "module": "src/index.ts",
     "type": "module",
     "private": true,
     "scripts": {
