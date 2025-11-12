@@ -1,6 +1,6 @@
 import type { DocGroup } from './doc.ts';
 
-export const Messaging: DocGroup = {
-    name: 'messaging',
+export const Widgets: DocGroup = {
+    name: 'widgets',
     docs: [],
 };

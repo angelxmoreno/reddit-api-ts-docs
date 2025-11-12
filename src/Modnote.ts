@@ -1,6 +1,6 @@
 import type { DocGroup } from './doc.ts';
 
-export const Modmail: DocGroup = {
-    name: 'modmail',
+export const Modnote: DocGroup = {
+    name: 'modnote',
     docs: [],
 };
