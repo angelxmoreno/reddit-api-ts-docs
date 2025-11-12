@@ -1,29 +1,8 @@
 import { z } from 'zod';
-import type { DocGroup } from './doc.ts';
+import type { DocGroup } from '../doc.ts';
+import { CommentSortEnum, RedditUserSchema, ThingSchema, TrophySchema, UserListItemSchema } from '../schemas.ts';
 
-// Common schemas
-const RedditUserSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    created: z.number(),
-    created_utc: z.number(),
-    link_karma: z.number(),
-    comment_karma: z.number(),
-    total_karma: z.number().optional(),
-    is_gold: z.boolean(),
-    is_mod: z.boolean(),
-    is_employee: z.boolean().optional(),
-    has_verified_email: z.boolean(),
-    icon_img: z.string(),
-    has_mail: z.boolean().optional(),
-    has_mod_mail: z.boolean().optional(),
-    inbox_count: z.number().optional(),
-    accept_followers: z.boolean().optional(),
-    accept_pms: z.boolean().optional(),
-    accept_chats: z.string().optional(),
-    hide_from_robots: z.boolean().optional(),
-});
-
+// Account-specific schemas
 const KarmaListSchema = z.array(
     z.object({
         sr: z.string(), // subreddit name
@@ -32,53 +11,14 @@ const KarmaListSchema = z.array(
     })
 );
 
-const TrophySchema = z.object({
-    icon_70: z.string(),
-    icon_40: z.string(),
-    name: z.string(),
-    url: z.string().nullable(),
-    award_id: z.string().nullable(),
-    id: z.string().nullable(),
-    description: z.string().nullable(),
-});
-
 const TrophyListSchema = z.object({
     kind: z.literal('TrophyList'),
     data: z.object({
-        trophies: z.array(
-            z.object({
-                kind: z.literal('t6'),
-                data: TrophySchema,
-            })
-        ),
+        trophies: z.array(ThingSchema(TrophySchema, 't6')),
     }),
 });
 
-const FriendSchema = z.object({
-    name: z.string(),
-    id: z.string(),
-    date: z.number(),
-});
-
-const FriendListSchema = z.array(
-    z.object({
-        kind: z.literal('t2'),
-        data: FriendSchema,
-    })
-);
-
-const BlockedUserSchema = z.object({
-    name: z.string(),
-    id: z.string(),
-    date: z.number(),
-});
-
-const BlockedUserListSchema = z.array(
-    z.object({
-        kind: z.literal('t2'),
-        data: BlockedUserSchema,
-    })
-);
+const UserListSchema = z.array(ThingSchema(UserListItemSchema, 't2'));
 
 const PreferencesSchema = z.object({
     // Email settings
@@ -138,9 +78,7 @@ const PreferencesSchema = z.object({
     third_party_data_personalized_ads: z.boolean().optional(),
     third_party_site_data_personalized_ads: z.boolean().optional(),
     third_party_site_data_personalized_content: z.boolean().optional(),
-    default_comment_sort: z
-        .enum(['confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa', 'live'])
-        .optional(),
+    default_comment_sort: CommentSortEnum.optional(),
     enable_default_themes: z.boolean().optional(),
     g: z.string().optional(),
     content_langs: z.array(z.string()).optional(),
@@ -198,7 +136,7 @@ export const Account: DocGroup = {
             responseSchema: z.object({
                 kind: z.literal('UserList'),
                 data: z.object({
-                    children: FriendListSchema,
+                    children: UserListSchema,
                 }),
             }),
         },
@@ -210,7 +148,7 @@ export const Account: DocGroup = {
             responseSchema: z.object({
                 kind: z.literal('UserList'),
                 data: z.object({
-                    children: BlockedUserListSchema,
+                    children: UserListSchema,
                 }),
             }),
         },
