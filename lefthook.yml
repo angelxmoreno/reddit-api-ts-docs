@@ -2,12 +2,12 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      run: npm run lint
+      run: bun run lint
       skip:
         - merge
         - rebase
     types:
-      run: npm run typecheck
+      run: bun run typecheck
       skip:
         - merge
         - rebase
@@ -15,5 +15,5 @@ commit-msg:
   parallel: true
   commands:
     commitlint:
-      run: npx commitlint --edit $1
+      run: bunx commitlint --edit $1
 
