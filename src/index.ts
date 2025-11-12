@@ -1,1 +1,16 @@
 export { Account } from './Account.ts';
+export { Captcha } from './Captcha.ts';
+export { Flair } from './Flair.ts';
+export { Gold } from './Gold.ts';
+export { LinksAndComments } from './LinksAndComments.ts';
+export { Listings } from './Listings.ts';
+export { LiveThreads } from './LiveThreads.ts';
+export { Messaging } from './Messaging.ts';
+export { Misc } from './Misc.ts';
+export { Moderation } from './Moderation.ts';
+export { Modmail } from './Modmail.ts';
+export { Multis } from './Multis.ts';
+export { Search } from './Search.ts';
+export { Subreddits } from './Subreddits.ts';
+export { Users } from './Users.ts';
+export { Wiki } from './Wiki.ts';
