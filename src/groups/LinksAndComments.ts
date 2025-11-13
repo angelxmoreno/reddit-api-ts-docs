@@ -2,17 +2,36 @@ import { z } from 'zod';
 import type { DocGroup } from '../doc.ts';
 import { CommentSortEnum, ListingSchema } from '../schemas.ts';
 
-const SubmitSchema = z.object({
-    sr: z.string(),
-    kind: z.enum(['link', 'self', 'image', 'video', 'videogif']),
-    title: z.string(),
-    url: z.string().optional(),
-    text: z.string().optional(),
-    sendreplies: z.boolean().optional(),
-    nsfw: z.boolean().optional(),
-    spoiler: z.boolean().optional(),
-    resubmit: z.boolean().optional(),
-});
+const SubmitSchema = z
+    .object({
+        sr: z.string(),
+        kind: z.enum(['link', 'self', 'image', 'video', 'videogif']),
+        title: z.string(),
+        url: z.string().optional(),
+        text: z.string().optional(),
+        sendreplies: z.boolean().optional(),
+        nsfw: z.boolean().optional(),
+        spoiler: z.boolean().optional(),
+        resubmit: z.boolean().optional(),
+    })
+    .superRefine((data, ctx) => {
+        // Link posts require url
+        if (data.kind === 'link' && !data.url) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'url is required for link posts',
+                path: ['url'],
+            });
+        }
+        // Self posts require text
+        if (data.kind === 'self' && !data.text) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'text is required for self posts',
+                path: ['text'],
+            });
+        }
+    });
 
 const ThingIdSchema = z.object({
     id: z.string(),
@@ -159,7 +178,7 @@ export const LinksAndComments: DocGroup = {
             requestSchema: z.object({
                 id: z.string(),
                 state: z.boolean(),
-                num: z.number().optional(),
+                num: z.number().int().min(1).max(2).optional(),
             }),
             responseSchema: z.object({ success: z.boolean() }),
         },

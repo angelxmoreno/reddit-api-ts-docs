@@ -14,6 +14,12 @@ const MessageIdSchema = z.object({
     id: z.string(),
 });
 
+const PaginationParamsSchema = z.object({
+    limit: z.number().optional(),
+    after: z.string().optional(),
+    before: z.string().optional(),
+});
+
 export const PrivateMessages: DocGroup = {
     name: 'private_messages',
     docs: [
@@ -49,28 +55,28 @@ export const PrivateMessages: DocGroup = {
             description: 'View message inbox for the authenticated user.',
             method: 'GET',
             uri: '/message/inbox',
-            requestSchema: null,
+            requestSchema: PaginationParamsSchema,
             responseSchema: ListingSchema(z.any()),
         },
         {
             description: 'View sent messages for the authenticated user.',
             method: 'GET',
             uri: '/message/sent',
-            requestSchema: null,
+            requestSchema: PaginationParamsSchema,
             responseSchema: ListingSchema(z.any()),
         },
         {
             description: 'View unread messages for the authenticated user.',
             method: 'GET',
             uri: '/message/unread',
-            requestSchema: null,
+            requestSchema: PaginationParamsSchema,
             responseSchema: ListingSchema(z.any()),
         },
         {
             description: 'Generic message endpoint for accessing different message views.',
             method: 'GET',
             uri: '/message/{where}',
-            requestSchema: null,
+            requestSchema: PaginationParamsSchema,
             responseSchema: ListingSchema(z.any()),
         },
     ],

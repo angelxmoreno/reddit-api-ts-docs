@@ -88,7 +88,7 @@ bun run lint:fix
 
 ## Project Structure
 
-```
+```plaintext
 src/
 ├── doc.ts              # Core type definitions
 ├── schemas.ts          # Shared schemas and types
