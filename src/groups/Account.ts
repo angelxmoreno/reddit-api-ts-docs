@@ -152,12 +152,5 @@ export const Account: DocGroup = {
                 }),
             }),
         },
-        {
-            description: 'Check whether captchas are needed for API requests.',
-            method: 'GET',
-            uri: '/api/needs_captcha',
-            requestSchema: null,
-            responseSchema: z.boolean(),
-        },
     ],
 };
